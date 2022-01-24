@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+    
+        <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css" />
+        <script src="./bootstrap/js/bootstrap.min.js" defer></script>
+    
+        <link rel="stylesheet" href="./styles/style.css" />
+        <link rel="stylesheet" href="./styles/navbar.css" />
+        <link rel="stylesheet" href="./styles/toastr.css" />
+    
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="./scripts/jquery.validate.js" defer></script>
+    
+        <script src="./scripts/script.js" defer></script>
+        <script src="./scripts/nav.js" defer></script>
+        <script src="./scripts/toastr.js" defer></script>
+        <title>Products</title>
+    </head>
+</head>
+<body>
+    <main>
+        <form id="productForm">
+            <div class="form-group">
+                <label>Name</label>
+                <input id="name" name="name required type="text" value="" class="form-control" />
+            </div>
+
+
+            <div class="form-group">
+                <label>Description</label>
+                <input id="description" name="description" required type="text" value="" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <select data-rule-selecttopic="true" class="form-control">
+                    <option id="0">Select Topic</option>
+                    <option id="1">History</option>
+                    <option id="2">Geography</option>
+                    <option id="3">Sports</option>
+                    <option id="4">Information Technology</option>
+                </select>
+            </div>
+
+            <button style="margin-left:55px;" class="btn btn-primary">Save</button>
+        </form>
+        <table id="products" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Stock Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var employee in Model.Employees)
+                {
+                    <tr>
+                        <td>@employee.EmployeeName</td>
+                        <td>@employee.EmployeeAddress</td>
+                        <td>@employee.ContactNumber</td>
+                        <td>@employee.Designation.Name</td>
+                        <td id="delete">@Html.ActionLink("Delete", "Delete", "Employee", new { id = employee.Id }, new { @class = "delete" })</td>
+                        <td id="update">@Html.ActionLink("Update", "Edit", "Employee", new { id = employee.Id }, new { @class = "update" })</td>
+                    </tr>
+                }
+            </tbody>
+    
+        </table>
+    </main>
+    
+</body>
+</html>
+<script>
+    $(function () {
+        var vm = {};
+
+        $("button").click(function () {
+            vm.name = $("#email").val();
+            vm.description = $("#password").val();
+            vm.category = $("#email").val();
+            vm.stock = $("#password").val();
+            vm.email = $("#email").val();
+            vm.password = $("#password").val();
+
+            var validator = $("#loginForm").validate({
+            submitHandler: function () {
+                $.ajax({
+                    url: "localhost:8000/api/auth",
+                    method: "POST",
+                    data: vm
+
+                }).done(function () {
+                    toastr.success("New question added.");
+
+
+                    $("#email").val("");
+                    $("password").val("");
+
+                    vm = {};
+
+                    validator.resetForm();
+
+                }).fail(function () {
+                    toastr.error("Something went wrong.");
+                });
+
+                return false;
+            }
+            });
+        });
+    });
+
+</script>
