@@ -3,12 +3,14 @@ const {Category} = require('../models/category');
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
+const auth = require('../authorizationmiddleware/auth');
 
 const multer=require('multer');
+const admin = require('../authorizationmiddleware/admin');
 
 const Storage= multer.diskStorage({
   destination:(req,file,cb)=>{
-    cb(null,'./static/products')
+    cb(null,'./public/static/products')
   },
   filename:(req,file,cb)=>{
     cb(null,Date.now()+"--"+file.originalname)
@@ -23,7 +25,7 @@ router.get('/', async (req, res) => {
   res.send(products);
 });
 
-router.post('/', upload, async (req, res) => {
+router.post('/', upload, auth,admin, async (req, res) => {
   // console.log(req.body);
   // const { error } = validate(req.body); 
   // if (error) return res.status(400).send(error.details[0].message);
@@ -71,7 +73,7 @@ router.put('/:id', async (req, res) => {
   res.send(product);
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id',auth,admin, async (req, res) => {
   const product = await Product.findByIdAndRemove(req.params.id);
 
   if (!product) return res.status(404).send('The product with the given ID was not found.');

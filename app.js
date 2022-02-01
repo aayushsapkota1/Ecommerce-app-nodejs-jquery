@@ -12,6 +12,8 @@ const app = express();
 const path= require('path');
 const bodyParser= require('body-parser'); 
 const req = require('express/lib/request');
+const Product= require('./models/product');
+
 
 
 app.use(express.static(__dirname+"/public"));
@@ -46,6 +48,16 @@ app.get("/login",(req,res)=> {
 app.get("/new-product",(req,res)=> {
   res.render('product_form');
 });
+app.get("/user-list",(req,res)=> {
+  res.render('users');
+});
+app.get("/products-admin",(req,res)=> {
+  res.render('products');
+});
+app.get("/products-client",(req,res)=> {
+  res.render('products-client');
+});
+
 
 
 

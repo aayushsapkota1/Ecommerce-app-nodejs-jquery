@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+    <script src="/bootstrap/js/bootstrap.min.js" defer></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="/scripts/jquery.validate.js" defer></script>
+    <script src="/scripts/bootbox.min.js" defer></script>
+
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.4/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.4/datatables.min.js"></script>
+ -->
+
+    <link rel="stylesheet" type="text/css" href="/DataTables/datatables.min.css" />
+    <script type="text/javascript" src="/DataTables/datatables.min.js"></script>
+
+    <link rel="stylesheet" href="/styles/style.css" />
+    <link rel="stylesheet" href="/styles/navbar.css" />
+    <link rel="stylesheet" href="/styles/toastr.css" />
+
+
+    <script src="/scripts/script.js" defer></script>
+    <script src="/scripts/nav.js" defer></script>
+    <script src="./scripts/toastr.js" defer></script>
+    <title> Products</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo-container">
+                <img src="/images/logo.svg" alt="logo">
+                <a class="brand-title" href="#">Three Dots</a>
+            </div>
+            <a href="#" class="toggle-button">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </a>
+            <div class="navbar-links">
+                <ul>
+                    <li><a href="#">Orders</a></li>
+                    <li><a href="/user-list">Users</a></li>
+                    <li><a id="logout" href="/">Log Out</a></li>
+
+
+                </ul>
+            </div>
+        </nav>
+
+
+
+    </header>
+    <main>
+        <div class="list">
+            <h2>Products</h2>
+            <a href="/new-product">
+                <p class="btn btn-primary">New Product</p>
+            </a>
+            <table id="products" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Available Quantity</th>
+                        <th>Price</th>
+                        <th>Image</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+            </table>
+
+        </div>
+
+
+    </main>
+    <img class="big-circle" src="/images/big-eclipse.svg" alt="">
+    <img class="medium-circle" src="/images/mid-eclipse.svg" alt="">
+    <img class="small-circle" src="/images/small-eclipse.svg" alt="">
+</body>
+
+</html>
+<script>
+    $(function () {
+        const data10 = sessionStorage.getItem('somedata');
+        $("#logout").click(function () {
+            alert("Are you sure want to logout?");
+            sessionStorage.clear();
+        });
+        var table = $("#products").DataTable({
+            ajax: {
+                url: "/api/products",
+                dataSrc: ""
+            },
+            columns: [
+                {
+                    data: "name",
+                    render: function (data, type, product) {
+                        return "<p>" + product.name + "</p>";
+                    }
+                },
+                {
+                    data: "quantity",
+                    render: function (data, type, product) {
+                        return "<p>" + product.quantity + "</p>";
+                    }
+
+
+                },
+                {
+                    data: "price",
+                    render: function (data, type, product) {
+                        return "<p>" + product.price + "</p>";
+                    }
+
+
+                },
+
+                {
+                    data: "image",
+                    render: function (data, type, product) {
+                        return "<img src='/static/products/" + product.image + "' height='70' width='90'>";
+                    }
+                },
+                {
+                    data: "_id",
+                    render: function (data) {
+                        return "<button class='table-button' data-product-id=" + data + ">Delete</button>";
+                    }
+                }
+            ]
+        });
+        $("#products").on("click", ".table-button", function () {
+            var button = $(this);
+
+            bootbox.confirm("Are you sure want to delete this product?", function (result) {
+                if (result) {
+                    $.ajax({
+                        url: "/api/products/" + button.attr("data-product-id"),
+                        // data: {"token":data10},
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("x-auth-token", data10);
+                        },
+                        method: "DELETE",
+                        success: function () {
+                            table.row(button.parents("tr")).remove().draw();
+                        }
+                    });
+                }
+            });
+
+        });
+    });
+
+</script>

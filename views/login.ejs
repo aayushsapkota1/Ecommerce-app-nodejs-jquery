@@ -29,7 +29,7 @@
         <nav class="navbar">
             <div class="logo-container">
                 <img src="./images/logo.svg" alt="logo">
-                <a class="brand-title" href="#">Three Dots</a>
+                <a class="brand-title" href="/">Three Dots</a>
             </div>
             <a href="#" class="toggle-button">
                 <span class="bar"></span>
@@ -38,9 +38,9 @@
             </a>
             <div class="navbar-links">
                 <ul>
-                    <li><a href="#">Home</a></li>
+                    <li><a href="/">Home</a></li>
                     <li><a href="#">About</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="/products-client">Products</a></li>
                 </ul>
             </div>
         </nav>
@@ -49,22 +49,29 @@
 
     </header>
     <main>
-        <h2>Login</h2>
+        <div class="form">
+            <h2>Login</h2>
 
-        <form id="loginForm" action="/api/auth" method="post">
-            <div class="form-group">
-                <label>Email</label>
-                <input id="email" name="email" required type="text" value="" class="form-control" />
-            </div>
+            <form id="loginForm" action="/api/auth" method="post">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input id="email" name="email" required type="text" value="" class="form-control" />
+                </div>
 
 
-            <div class="form-group">
-                <label>Password</label>
-                <input id="password" name="password" required type="password" value="" class="form-control" />
-            </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input id="password" name="password" required type="password" value="" class="form-control" />
+                </div>
 
-            <button style="margin-left:55px;" class="btn btn-primary">Save</button>
-        </form>
+                <button id="form-button" style="margin-left:55px;" class="btn btn-primary">Login</button>
+
+                <div class="form-group">
+                    <p>Dont have an account? <a href="/">Register</a></p>
+                </div>
+            </form>
+        </div>
+
     </main>
     <img class="big-circle" src="./images/big-eclipse.svg" alt="">
     <img class="medium-circle" src="./images/mid-eclipse.svg" alt="">
@@ -75,35 +82,58 @@
 <script>
     $(function () {
         var vm = {};
+        var token;
+        var isAdmin;
 
         $("button").click(function () {
             vm.email = $("#email").val();
             vm.password = $("#password").val();
 
             var validator = $("#loginForm").validate({
-            submitHandler: function () {
-                $.ajax({
-                    url: "/api/auth",
-                    method: "POST",
-                    data: vm
+                submitHandler: function () {
+                    // $.ajax({
+                    //     url: "/api/auth",
+                    //     method: "POST",
+                    //     data: vm
 
-                }).done(function () {
-                    toastr.success("Log In Successful.");
+                    // })
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/auth',
+                        data: vm,
+                        success: function (data, textStatus, request) {
+                            const x = request.responseText;
+                            isAdmin = x;
 
+                            token= request.getResponseHeader('x-auth-token');
+                            sessionStorage.setItem('somedata', token);
 
-                    $("#email").val("");
-                    $("#password").val("");
+                        },
+                        error: function (request, textStatus, errorThrown) {
+                            alert(request.getResponseHeader('x-auth-token'));
+                        }
+                    })
 
-                    vm = {};
+                        .done(function () {
+                            console.log(isAdmin);
+                            if(isAdmin=='true'){
+                                window.location.replace("/products-admin");
+                            } else {
+                                window.location.replace("/products-client");
+                            }
+                            
+                            // toastr.success("Log In Successful.");
+                            // $("#email").val("");
+                            // $("#password").val("");
+                            // vm = {};
+                            // validator.resetForm();
 
-                    validator.resetForm();
+                        }).fail(function () {
+                            toastr.error("Something went wrong.");
+                        });
 
-                }).fail(function () {
-                    toastr.error("Something went wrong.");
-                });
-
-                return false;
-            }
+                    return false;
+                }
             });
         });
     });

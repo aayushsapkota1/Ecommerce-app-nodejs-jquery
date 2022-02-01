@@ -13,7 +13,7 @@ const { applyFunctionToChildren } = require('joi/lib/types/lazy');
 
 const Storage= multer.diskStorage({
   destination:(req,file,cb)=>{
-    cb(null,'./static/users')
+    cb(null,'./public/static/users')
   },
   filename:(req,file,cb)=>{
     cb(null,Date.now()+"--"+file.originalname)
@@ -21,6 +21,11 @@ const Storage= multer.diskStorage({
 });
 
 const upload=multer({storage:Storage}).single('file');
+
+router.get('/', async (req, res) => {
+  const users = await User.find().sort('name');
+  res.send(users);
+});
 
 router.get('/me', auth, async (req, res) => {
   const user = await User.findById(req.user._id).select('-password');
@@ -47,7 +52,7 @@ router.post('/', upload, async (req, res) => {
   await user.save();
 
   const token = user.generateAuthToken();
-  res.header('x-auth-token', token).send(_.pick(user, ['_id', 'name', 'email','address']));
+  res.header('x-auth-token', token).send(_.pick(user, ['_id', 'name', 'email','address','isAdmin']));
 });
 
 module.exports = router; 

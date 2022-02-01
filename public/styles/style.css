@@ -9,7 +9,7 @@ body {
       
 }
 
-main {
+.form {
     margin: auto;
     width: 35%;
     margin-top: 75px;
@@ -18,8 +18,18 @@ main {
     border-radius: 10px;
     position: relative;
     top: 20px;
-   
 }
+.list {
+    margin: auto;
+    width: 85%;
+    text-align: center;
+}
+
+
+table{
+    border: 1px solid black;
+}
+
 #loginForm {
     width: 75%;
     margin: auto;
@@ -37,7 +47,7 @@ main {
 }
 
 h2 {
-    width: 50%;
+    width:35%;
     margin: auto;
     border-bottom: 2px solid black;
     text-align: center;
@@ -51,12 +61,27 @@ input, select {
     margin: auto;
 }
 
-button {
+#form-button {
     height: 40px;
     width: 250px;
     margin-top: 15px;
     margin-left: 110px;
 }
+.table-button {
+    background: #333;
+    color: white;
+    width: 150px;
+    height: 40px;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+.order-button:hover {
+    background: white;
+    color: #333;
+    border: 2px solid #333;
+    transition: 0.4s;
+}
+
 
 label.error {
     color: red;
