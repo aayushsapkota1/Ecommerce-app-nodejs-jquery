@@ -83,7 +83,7 @@
                 </div>
 
 
-                <button id="form-button" class="btn btn-primary">Save</button>
+                <button id="form-button" class="btn btn-primary">Sign Up</button>
 
 
 
@@ -133,6 +133,7 @@
                             
                             token= request.getResponseHeader('x-auth-token');
                             sessionStorage.setItem('somedata', token);
+                            sessionStorage.setItem('userId', data._id);
 
                         },
 

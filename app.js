@@ -57,6 +57,18 @@ app.get("/products-admin",(req,res)=> {
 app.get("/products-client",(req,res)=> {
   res.render('products-client');
 });
+app.get("/new-order",(req,res)=> {
+  res.render('new-order');
+});
+app.get("/update-order",(req,res)=> {
+  res.render('update-order');
+});
+app.get("/myorders",(req,res)=> {
+  res.render('myorder');
+});
+app.get("/orders",(req,res)=> {
+  res.render('orders');
+});
 
 
 

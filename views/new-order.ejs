@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+    <script src="/bootstrap/js/bootstrap.min.js" defer></script>
+
+    <link rel="stylesheet" href="/styles/style.css" />
+    <link rel="stylesheet" href="/styles/navbar.css" />
+    <link rel="stylesheet" href="/styles/toastr.css" />
+    <style>
+        .price {
+            display: flex;
+            font-size: large;
+            justify-content: center;
+        }
+
+        .price-text {
+            font-weight: 1000;
+            margin-left: 5px;
+        }
+
+        button {
+            margin-bottom: 25px;
+        }
+
+        .image {
+            text-align: center;
+        }
+
+        .product-name {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .product-price {
+            text-align: center;
+            font-weight: 1000;
+        }
+
+        .description {
+            text-align: center;
+        }
+    </style>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="/scripts/jquery.validate.js" defer></script>
+
+    <script src="/scripts/script.js" defer></script>
+    <script src="/scripts/nav.js" defer></script>
+    <script src="./scripts/toastr.js" defer></script>
+    <title>New Order Form</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo-container">
+                <img src="/images/logo.svg" alt="logo">
+                <a class="brand-title" href="#">Three Dots</a>
+            </div>
+            <a href="#" class="toggle-button">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </a>
+            <div class="navbar-links">
+                <ul>
+                    <li><a href="#">My Orders</a></li>
+                    <li><a href="/products-client">Products</a></li>
+                    <li><a id="logout" href="/">Log Out</a></li>
+
+                </ul>
+            </div>
+        </nav>
+
+
+
+    </header>
+    <main>
+
+        <div class="form">
+            <h2>New Order</h2>
+            <div class="image"></div>
+            <div class="product-name"></div>
+            <div class="product-price"></div>
+            <div class="description"></div>
+            <form id="orderForm" action="/api/orders" method="post">
+
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input id="quantity" name="quantity" required type="number" value="" class="form-control" />
+                </div>
+
+                <div class="price">
+                    <p>Total Price:</p>
+                    <div class="price-text"></div>
+                </div>
+
+                <button id="form-button" class="btn btn-primary">Place Order</button>
+            </form>
+        </div>
+
+
+    </main>
+    <img class="big-circle" src="/images/big-eclipse.svg" alt="">
+    <img class="medium-circle" src="/images/mid-eclipse.svg" alt="">
+    <img class="small-circle" src="/images/small-eclipse.svg" alt="">
+</body>
+
+</html>
+<script>
+    $(function () {
+        var vm = {};
+        const data10 = sessionStorage.getItem('somedata');
+        const selectedProductId = sessionStorage.getItem('product_Id');
+
+        $.get('/api/products/' + selectedProductId,  // url
+            function (data) {  // success callback
+
+                $(".image").append("<img src='static/products/" + data.image + "'height=150 width=180></image>");
+                $(".product-name").append("<p>" + data.name + "</p>");
+                $(".description").append("<p>Description: " + data.description + "</p>");
+                $(".product-price").append("<p>Price: " + data.price + "</p>");
+
+                $("#quantity").val(1);
+                var quantity = $("#quantity").val();
+                $(".price-text").append("<p>" + quantity * data.price + "</p>");
+
+                $("#quantity").change(function () {
+                    newQuantity = $("#quantity").val();
+                    $(".price-text p").replaceWith("<p>" + newQuantity * data.price + "</p>");
+                });
+                $("#quantity").keyup(function () {
+                    newQuantity = $("#quantity").val();
+                    $(".price-text p").replaceWith("<p>" + newQuantity * data.price + "</p>");
+                });
+
+            });
+
+        $("#logout").click(function () {
+            alert("Are you sure want to logout?");
+            sessionStorage.clear();
+        });
+       
+        $("button").click(function () {
+
+            vm.quantity = $("#quantity").val();
+            vm.productId = sessionStorage.getItem('product_Id');
+            vm.userId = sessionStorage.getItem('userId');
+
+            var validator = $("#orderForm").validate({
+
+                submitHandler: function () {
+                    $.ajax({
+                        url: "/api/orders",
+                        method: "POST",
+                        data: vm,
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("x-auth-token", data10);
+                        },
+
+                    }).done(function () {
+                        toastr.success("Order added successfully.");
+                        $("#quantity").val("");
+                        vm = {};
+                        validator.resetForm();
+                        setTimeout(() => {
+                            window.location.replace("/myorders");
+                        }, 1000);
+
+                    }).fail(function () {
+                        toastr.error("Something went wrong.");
+                    });
+
+
+                    return false;
+                }
+            });
+        });
+    });
+
+</script>

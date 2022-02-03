@@ -102,11 +102,11 @@
                         url: '/api/auth',
                         data: vm,
                         success: function (data, textStatus, request) {
-                            const x = request.responseText;
-                            isAdmin = x;
-
+                            // isAdmin = request.responseText;
+                            isAdmin=data.isAdmin;
                             token= request.getResponseHeader('x-auth-token');
                             sessionStorage.setItem('somedata', token);
+                            sessionStorage.setItem('userId', data._id);
 
                         },
                         error: function (request, textStatus, errorThrown) {
@@ -116,17 +116,12 @@
 
                         .done(function () {
                             console.log(isAdmin);
-                            if(isAdmin=='true'){
+                            if(isAdmin==true){
                                 window.location.replace("/products-admin");
                             } else {
                                 window.location.replace("/products-client");
                             }
                             
-                            // toastr.success("Log In Successful.");
-                            // $("#email").val("");
-                            // $("#password").val("");
-                            // vm = {};
-                            // validator.resetForm();
 
                         }).fail(function () {
                             toastr.error("Something went wrong.");
