@@ -63,6 +63,9 @@ app.get("/new-order",(req,res)=> {
 app.get("/update-order",(req,res)=> {
   res.render('update-order');
 });
+app.get("/update-product",(req,res)=> {
+  res.render('updateProduct');
+});
 app.get("/myorders",(req,res)=> {
   res.render('myorder');
 });

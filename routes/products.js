@@ -50,8 +50,9 @@ router.post('/', upload, auth,admin, async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
-  const { error } = validate(req.body); 
-  if (error) return res.status(400).send(error.details[0].message);
+  console.log(req.body);
+  // const { error } = validate(req.body); 
+  // if (error) return res.status(400).send(error.details[0].message);
 
   // const category = await Category.findById(req.body.categoryId);
   // if (!category) return res.status(400).send('Invalid category.');
@@ -63,10 +64,11 @@ router.put('/:id', async (req, res) => {
       //   _id: category._id,
       //   name: category.name
       // },
-      numberInStock: req.body.numberInStock,
+      quantity: req.body.numberInStock,
       price: req.body.price,
       description:req.body.description
     }, { new: true });
+    
 
   if (!product) return res.status(404).send('The product with the given ID was not found.');
   

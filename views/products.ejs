@@ -74,6 +74,7 @@
                         <th>Price</th>
                         <th>Image</th>
                         <th>Delete</th>
+                        <th>Update</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -135,12 +136,18 @@
                 {
                     data: "_id",
                     render: function (data) {
-                        return "<button class='table-button' data-product-id=" + data + ">Delete</button>";
+                        return "<button id='deleteButton' class='table-button' data-product-id=" + data + ">Delete</button>";
+                    }
+                },
+                {
+                    data: "_id",
+                    render: function (data) {
+                        return "<button id='updateButton' class='table-button' data-product-id=" + data + ">Update</button>";
                     }
                 }
             ]
         });
-        $("#products").on("click", ".table-button", function () {
+        $("#products").on("click", "#deleteButton", function () {
             var button = $(this);
 
             bootbox.confirm("Are you sure want to delete this product?", function (result) {
@@ -160,6 +167,13 @@
             });
 
         });
+        $("#products").on("click", "#updateButton", function () {
+            var button = $(this);
+
+            sessionStorage.setItem('productToUpdate',button.attr("data-product-id"));
+            window.location.replace('/update-product')
+                        
+            });
     });
 
 </script>

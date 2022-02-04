@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+    <script src="/bootstrap/js/bootstrap.min.js" defer></script>
+
+    <link rel="stylesheet" href="/styles/style.css" />
+    <link rel="stylesheet" href="/styles/navbar.css" />
+    <link rel="stylesheet" href="/styles/toastr.css" />
+    <style>
+       
+        button {
+            margin-bottom: 25px;
+        }
+        .image {
+            text-align: center;
+        }
+        h2 {
+            width: 250px;
+            
+        }
+       
+    </style>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="/scripts/jquery.validate.js" defer></script>
+
+    <script src="/scripts/script.js" defer></script>
+    <script src="/scripts/nav.js" defer></script>
+    <script src="./scripts/toastr.js" defer></script>
+    <title>Update Product Form</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo-container">
+                <img src="/images/logo.svg" alt="logo">
+                <a class="brand-title" href="#">Three Dots</a>
+            </div>
+            <a href="#" class="toggle-button">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </a>
+            <div class="navbar-links">
+                <ul>
+                    <li><a href="/products-admin">Home</a></li>
+                    <li><a id="logout" href="/">Log Out</a></li>
+
+                </ul>
+            </div>
+        </nav>
+
+
+
+    </header>
+    <main>
+        <div class="form">
+            <h2>Update Prodct</h2>
+
+            <div class="image"></div>
+           
+            <form id="productForm">
+
+                <div class="form-group">
+                    <label>Name</label>
+                    <input id="name" name="name" required type="text" value="" class="form-control" />
+                </div>
+    
+                <div class="form-group">
+                    <label>Stock Quantity</label>
+                    <input id="quantity" name="quantity" required type="number" value="" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Price</label>
+                    <input id="price" name="price" required type="text" value="" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" value="" class="form-control"></textarea>
+                </div>
+
+                <button id="form-button" class="btn btn-primary">Update</button>
+
+
+
+            </form>
+        </div>
+
+
+    </main>
+    <img class="big-circle" src="/images/big-eclipse.svg" alt="">
+    <img class="medium-circle" src="/images/mid-eclipse.svg" alt="">
+    <img class="small-circle" src="/images/small-eclipse.svg" alt="">
+</body>
+
+</html>
+<script>
+    $(function () {
+        var vm = {};
+        const data10 = sessionStorage.getItem('somedata');
+        const selectedProductId = sessionStorage.getItem('productToUpdate');
+        console.log(selectedProductId);
+
+        $.get('/api/products/' + selectedProductId,  // url
+            function (data) {  // success callback
+                console.log(data);
+                $("#quantity").val(data.quantity);
+                $("#name").val(data.name);
+                $("#price").val(data.price);
+                $("#description").val(data.description);
+
+                $(".image").append("<img src='static/products/"+data.image+"'height=150 width=180></image>");
+              
+
+            });
+
+        $("#logout").click(function () {
+            alert("Are you sure want to logout?");
+            sessionStorage.clear();
+        });
+
+        $("button").click(function () {
+
+            vm.name = $("#name").val();
+            vm.numberInStock = $("#quantity").val();
+            vm.price = $("#price").val();
+            vm.description = $("#description").val();
+
+            var validator = $("#productForm").validate({
+
+                submitHandler: function () {
+                    $.ajax({
+                        url: "/api/products/" + selectedProductId,
+                        method: "PUT",
+                        data: vm,
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("x-auth-token", data10);
+                        },
+
+                    }).done(function () {
+                        toastr.success("Product updated successfully.");
+
+                        $("#name").val("");
+                        $("#quantity").val("");
+                        $("#price").val("");
+                        $("#description").val("");
+                        $("#file").val("");
+                        vm = {};
+                        validator.resetForm();
+
+                        setTimeout(() => {
+                            window.location.replace("/products-admin");
+                        }, 1000);
+
+                    }).fail(function () {
+                        toastr.error("Something went wrong.");
+                    });
+
+
+                    return false;
+                }
+            });
+        });
+    });
+
+</script>
