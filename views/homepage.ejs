@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+    <script src="/bootstrap/js/bootstrap.min.js" defer></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="/styles/style.css" />
+    <link rel="stylesheet" href="/styles/navbar.css" />
+    <link rel="stylesheet" href="/styles/home.css" />
+
+
+    <script src="/scripts/script.js" defer></script>
+    <script src="/scripts/nav.js" defer></script>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo-container">
+                <img src="./images/logo.svg" alt="logo">
+                <a class="brand-title" href="/">Three Dots</a>
+            </div>
+            <a href="#" class="toggle-button">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </a>
+            <div class="navbar-links">
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a id="login" href="/login">Login</a></li>
+                    <li><a id="logout">Log Out</a></li>
+                </ul>
+            </div>
+        </nav>
+
+
+
+    </header>
+    <main>
+        <section class="presentation">
+            <div class="introduction">
+                <div class="intro-text">
+                    <h1>Bathroom Concept by Three Dots </h1>
+                    <p>We’re always available for product advice or bathroom design expertise.
+                        Reach out to our local store today for a better bathroom tomorrow.</p>
+                </div>
+                <div class="cta">
+                    <button class="cta-select">Register</button>
+                    <button class="cta-add">View Products</button>
+                </div>
+            </div>
+            <div class="cover">
+                <img src="/images/homepage.jpg" alt="pic" />
+            </div>
+        </section>
+    </main>
+</body>
+
+</html>
+<script>
+    $(function () {
+        const data10 = sessionStorage.getItem('somedata');
+        const isAdmin = sessionStorage.getItem('isAdmin');
+        console.log(isAdmin);
+
+        if (data10 == null) {
+            $("#logout").hide();
+        } else {
+            $("#logout").show();
+            $("#login").hide();
+
+        }
+
+        $("#logout").click(function () {
+            alert("Are you sure want to logout?");
+            sessionStorage.clear();
+            window.location.replace('/');
+        });
+        
+        if (isAdmin == "true") {
+                $(".cta-select").hide();
+            }
+
+        $(".cta-select").click(function () {
+            window.location.replace('/register');
+        });
+        $(".cta-add").click(function () {
+            if (isAdmin == "true") {
+                window.location.replace('/products-admin');
+            } else{
+                window.location.replace('/products-client');
+            }
+            
+        });
+    });
+</script>

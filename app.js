@@ -39,20 +39,16 @@ app.use('/api/orders', orders);
 app.use('/api/users', users);
 app.use('/api/auth', authentication);
 
-app.get("/",(req,res)=> {
-  res.render('register');
-});
+//views route
 app.get("/login",(req,res)=> {
   res.render('login');
 });
-app.get("/new-product",(req,res)=> {
-  res.render('product_form');
+app.get("/",(req,res)=> {
+  res.render('homepage.ejs');
 });
-app.get("/user-list",(req,res)=> {
-  res.render('users');
-});
-app.get("/products-admin",(req,res)=> {
-  res.render('products');
+//user views
+app.get("/register",(req,res)=> {
+  res.render('register');
 });
 app.get("/products-client",(req,res)=> {
   res.render('products-client');
@@ -63,18 +59,25 @@ app.get("/new-order",(req,res)=> {
 app.get("/update-order",(req,res)=> {
   res.render('update-order');
 });
-app.get("/update-product",(req,res)=> {
-  res.render('updateProduct');
-});
 app.get("/myorders",(req,res)=> {
   res.render('myorder');
+});
+//admin views
+app.get("/new-product",(req,res)=> {
+  res.render('product_form');
+});
+app.get("/user-list",(req,res)=> {
+  res.render('users');
+});
+app.get("/products-admin",(req,res)=> {
+  res.render('products');
+});
+app.get("/update-product",(req,res)=> {
+  res.render('updateProduct');
 });
 app.get("/orders",(req,res)=> {
   res.render('orders');
 });
-
-
-
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));

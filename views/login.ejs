@@ -38,7 +38,6 @@
             </a>
             <div class="navbar-links">
                 <ul>
-                    <li><a href="/">Home</a></li>
                     <li><a href="#">About</a></li>
                     <li><a href="/products-client">Products</a></li>
                 </ul>
@@ -63,8 +62,10 @@
                     <label>Password</label>
                     <input id="password" name="password" required type="password" value="" class="form-control" />
                 </div>
+                <div class="form-group">
+                    <button id="form-button" class="btn btn-primary">Login</button>
 
-                <button id="form-button" style="margin-left:55px;" class="btn btn-primary">Login</button>
+                </div>
 
                 <div class="form-group">
                     <p>Dont have an account? <a href="/">Register</a></p>
@@ -107,11 +108,13 @@
                             token= request.getResponseHeader('x-auth-token');
                             sessionStorage.setItem('somedata', token);
                             sessionStorage.setItem('userId', data._id);
+                            sessionStorage.setItem('isAdmin', isAdmin);
 
-                        },
-                        error: function (request, textStatus, errorThrown) {
-                            alert(request.getResponseHeader('x-auth-token'));
                         }
+
+                        // error: function (request, textStatus, errorThrown) {
+                        //     alert(request.getResponseHeader('x-auth-token'));
+                        // }
                     })
 
                         .done(function () {
@@ -124,7 +127,7 @@
                             
 
                         }).fail(function () {
-                            toastr.error("Something went wrong.");
+                            toastr.error("Invalid email or password.");
                         });
 
                     return false;

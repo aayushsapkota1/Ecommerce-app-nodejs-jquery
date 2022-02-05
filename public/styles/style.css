@@ -12,27 +12,12 @@ body {
 .form {
     margin: auto;
     width: 35%;
-    margin-top: 75px;
+    margin-top: 100px;
     margin-bottom: 35px;
     box-shadow: 5px 5px 10px;
     border-radius: 10px;
-    position: relative;
-    top: 20px;
 }
-.list {
-    margin: auto;
-    width: 85%;
-    text-align: center;
-}
-
-
-table{
-    border: 1px solid black;
-}
-
 #loginForm {
-    width: 75%;
-    margin: auto;
     padding-bottom: 25px;
     
 }
@@ -41,32 +26,38 @@ table{
     
 }
 
-.form-group {
-    text-align: center;
-    padding: 5px;
-}
-
-h2 {
-    width:45%;
-    margin: auto;
-    border-bottom: 2px solid black;
-    text-align: center;
-    margin-bottom: 30px;
-    padding-top: 20px;
-    font-size: 25px;
-}
-
-input, select {
-    max-width: 280px;
-    margin: auto;
-}
-
 #form-button {
     height: 40px;
     width: 250px;
     margin-top: 15px;
-    margin-left: 110px;
+    margin-bottom: 25px;
 }
+
+table{
+    border: 1px solid rgb(63, 62, 65);
+}
+
+.list {
+    margin: auto;
+    width: 75%;
+    text-align: center;
+}
+
+.form-group {
+    text-align: center;
+}
+
+h2 {
+    width:250px;
+    margin: auto;
+    border-bottom: 2px solid black;
+    text-align: center;
+    margin-bottom: 25px;
+    padding-top: 20px;
+    font-size: 25px;
+    margin-top: 75px;
+}
+
 .table-button {
     background: #333;
     color: white;
@@ -75,13 +66,24 @@ input, select {
     border-radius: 10px;
     border: 2px solid white;
 }
-.order-button:hover {
+#orderbutton:hover {
     background: white;
     color: #333;
     border: 2px solid #333;
     transition: 0.4s;
+    font-weight: 600;
 }
 
+
+
+
+
+
+
+input, select {
+    max-width: 280px;
+    margin: auto;
+}
 
 label.error {
     color: red;
@@ -113,11 +115,11 @@ input.error {
     z-index:-1;
 }
 @media (max-width: 800px) {
-    button{
+    #form-button{
         max-width: 150px;
     }
-    main {
-        min-width: 350px;
+    .form {
+        min-width: 400px;
     }
 }
 

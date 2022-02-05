@@ -47,8 +47,8 @@
             </a>
             <div class="navbar-links">
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a id="myorder" href="/myorders">My Orders</a></li>
+                    <li><a id="myorder" href="#">My Orders</a></li>
+                    <li><a id="register" href="/register">Register</a></li>
                     <li><a id="login" href="/login">Log In</a></li>
                     <li><a id="logout" href="/">Log Out</a></li>
                 </ul>
@@ -88,20 +88,24 @@
 <script>
     $(function () {
         const data10 = sessionStorage.getItem('somedata');
-        
+
         if (data10 == null) {
             $("#logout").hide();
         } else {
             $("#logout").show();
             $("#login").hide();
+            $("#register").hide();
         }
         $("#logout").click(function () {
             alert("Are you sure want to logout?");
             sessionStorage.clear();
+            window.location.replace('/');
         });
         $("#myorder").click(function () {
             if (data10 == null) {
                 alert("It seems you haven't login in yet!");
+            } else {
+                window.location.replace("/myorders");
             }
         });
         var table = $("#products").DataTable({
@@ -141,7 +145,7 @@
                 },
                 {
                     render: function (data, type, product) {
-                        return "<button data='"+product._id+"'class='table-button'>Order</button>";
+                        return "<button data='" + product._id + "'class='table-button' id='orderbutton'>Order</button>";
                     }
 
                 }
@@ -150,9 +154,15 @@
             ]
         });
         $("#products").on("click", ".table-button", function () {
-            var product_Id = $(this).attr('data');
-            sessionStorage.setItem('product_Id', product_Id);
-            window.location.replace('/new-order')
+            if (data10 == null) {
+                alert("Please login to place an order.");
+            } 
+            else {
+                var product_Id = $(this).attr('data');
+                sessionStorage.setItem('product_Id', product_Id);
+                window.location.replace('/new-order')
+            }
+
         });
 
 

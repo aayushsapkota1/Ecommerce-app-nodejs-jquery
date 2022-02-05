@@ -30,7 +30,7 @@
         <nav class="navbar">
             <div class="logo-container">
                 <img src="/images/logo.svg" alt="logo">
-                <a class="brand-title" href="#">Three Dots</a>
+                <a class="brand-title" href="./">Three Dots</a>
             </div>
             <a href="#" class="toggle-button">
                 <span class="bar"></span>
@@ -39,9 +39,7 @@
             </a>
             <div class="navbar-links">
                 <ul>
-                    <li><a href="#">Orders</a></li>
-                    <li><a href="/products-admin">Products</a></li>
-                    <li><a href="/user-list">Users</a></li>
+                    <li><a href="/products-admin">Dashboard</a></li>
                     <li><a id="logout" href="/">Log Out</a></li>
 
                 </ul>
@@ -78,9 +76,11 @@
                     <label>Image</label>
                     <input id="file" name="file" type="file" value="" class="form-control" />
                 </div>
+                <div class="form-group">
+                    <button id="form-button" class="btn btn-primary">Save</button>
+
+                </div>
     
-    
-                <button id="form-button" class="btn btn-primary">Save</button>
             </form>
         </div>
 
@@ -98,6 +98,7 @@
         $("#logout").click(function () {
             alert("Are you sure want to logout?");
             sessionStorage.clear();
+            window.location.replace('/');
         });
         var vm = {};
         $("button").click(function () {

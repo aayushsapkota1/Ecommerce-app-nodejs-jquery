@@ -31,7 +31,7 @@
     <script src="/scripts/script.js" defer></script>
     <script src="/scripts/nav.js" defer></script>
     <script src="./scripts/toastr.js" defer></script>
-    <title> Products</title>
+    <title>Admin-Dashboard</title>
 </head>
 
 <body>
@@ -39,7 +39,7 @@
         <nav class="navbar">
             <div class="logo-container">
                 <img src="/images/logo.svg" alt="logo">
-                <a class="brand-title" href="#">Three Dots</a>
+                <a class="brand-title" href="/">Three Dots</a>
             </div>
             <a href="#" class="toggle-button">
                 <span class="bar"></span>
@@ -62,14 +62,14 @@
     </header>
     <main>
         <div class="list">
-            <h2>Products</h2>
+            <h2>Dashboard</h2>
             <a href="/new-product">
                 <p class="btn btn-primary">New Product</p>
             </a>
             <table id="products" class="table table-bordered table-hover">
                 <thead>
                     <tr>
-                        <th>Name</th>
+                        <th>Product Name</th>
                         <th>Available Quantity</th>
                         <th>Price</th>
                         <th>Image</th>
@@ -97,6 +97,7 @@
         $("#logout").click(function () {
             alert("Are you sure want to logout?");
             sessionStorage.clear();
+            window.location.replace('/');
         });
         var table = $("#products").DataTable({
             ajax: {
@@ -136,18 +137,18 @@
                 {
                     data: "_id",
                     render: function (data) {
-                        return "<button id='deleteButton' class='table-button' data-product-id=" + data + ">Delete</button>";
+                        return "<button id='deletebutton' class='table-button' data-product-id=" + data + ">Delete</button>";
                     }
                 },
                 {
                     data: "_id",
                     render: function (data) {
-                        return "<button id='updateButton' class='table-button' data-product-id=" + data + ">Update</button>";
+                        return "<button id='updatebutton' class='table-button' data-product-id=" + data + ">Update</button>";
                     }
                 }
             ]
         });
-        $("#products").on("click", "#deleteButton", function () {
+        $("#products").on("click", "#deletebutton", function () {
             var button = $(this);
 
             bootbox.confirm("Are you sure want to delete this product?", function (result) {
@@ -167,7 +168,7 @@
             });
 
         });
-        $("#products").on("click", "#updateButton", function () {
+        $("#products").on("click", "#updatebutton", function () {
             var button = $(this);
 
             sessionStorage.setItem('productToUpdate',button.attr("data-product-id"));
