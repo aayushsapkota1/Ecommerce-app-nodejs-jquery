@@ -19,6 +19,11 @@
             font-size: large;
             justify-content: center;
         }
+        .available {
+            display: flex;
+            justify-content: center;
+            gap: 2px;
+        }
 
         .price-text {
             font-weight: 1000;
@@ -96,7 +101,11 @@
 
                 <div class="form-group">
                     <label>Quantity</label>
-                    <input id="quantity" name="quantity" required type="number" value="" class="form-control" />
+                    <input id="quantity" name="quantity" required min="1" type="number" value="" class="form-control" />
+                </div>
+                <div class="available">
+                    <p>Available Quantity:</p>
+                    <div class="try"></div>
                 </div>
 
                 <div class="price">
@@ -131,6 +140,7 @@
                 $(".product-name").append("<p>" + data.name + "</p>");
                 $(".description").append("<p>Description: " + data.description + "</p>");
                 $(".product-price").append("<p>Price: " + data.price + "</p>");
+                $(".try").append("<p>"+data.quantity+"</p>");
 
                 $("#quantity").val(1);
                 var quantity = $("#quantity").val();
@@ -180,7 +190,7 @@
                         }, 1000);
 
                     }).fail(function () {
-                        toastr.error("Something went wrong.");
+                        toastr.error("Mentioned quantity is not in stock");
                     });
 
 

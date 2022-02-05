@@ -34,7 +34,7 @@ function validateOrder(order) {
   const schema = {
     userId: Joi.objectId().required(),
     productId: Joi.objectId().required(),
-    quantity:Joi.number.min(1).required()
+    quantity:Joi.number().min(1).required()
   };
 
   return Joi.validate(order, schema);
