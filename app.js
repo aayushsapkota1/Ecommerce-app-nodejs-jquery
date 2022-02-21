@@ -62,6 +62,9 @@ app.get("/update-order",(req,res)=> {
 app.get("/myorders",(req,res)=> {
   res.render('myorder');
 });
+app.get("/paywithkhalti",(req,res)=> {
+  res.render('khalti');
+});
 //admin views
 app.get("/new-product",(req,res)=> {
   res.render('product_form');

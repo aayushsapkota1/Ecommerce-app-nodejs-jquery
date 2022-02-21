@@ -69,6 +69,7 @@
                         <th>Total Price</th>
                         <th>Delete</th>
                         <th>Update</th>
+                        <th>Pay Now</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -88,7 +89,7 @@
 <script>
     $(function () {
         const data10 = sessionStorage.getItem('somedata');
-        const myUserId= sessionStorage.getItem('userId');
+        const myUserId = sessionStorage.getItem('userId');
         $("#logout").click(function () {
             alert("Are you sure want to logout?");
             sessionStorage.clear();
@@ -100,9 +101,9 @@
         var table = $("#myorders").DataTable({
             ajax: {
                 url: "/api/orders",
-                dataSrc: function (json){
-                    return json.filter(function(item){
-                        return item.user._id==myUserId;
+                dataSrc: function (json) {
+                    return json.filter(function (item) {
+                        return item.user._id == myUserId;
                     })
                 }
             },
@@ -148,6 +149,12 @@
                     render: function (data) {
                         return "<button id='updatebutton' class='table-button' data-order-id=" + data + ">Update</button>";
                     }
+                },
+                {
+
+                    render: function () {
+                        return "<button id='payButton' class='table-button'>Pay with khalti</button>";
+                    }
                 }
 
             ]
@@ -175,10 +182,15 @@
         $("#myorders").on("click", "#updatebutton", function () {
             var button = $(this);
 
-            sessionStorage.setItem('orderToUpdate',button.attr("data-order-id"));
+            sessionStorage.setItem('orderToUpdate', button.attr("data-order-id"));
             window.location.replace('/update-order')
+
+        });
+        $("#myorders").on("click", "#payButton", function () {
+            window.location.replace('/paywithkhalti');
                         
             });
+
     });
 
 </script>
